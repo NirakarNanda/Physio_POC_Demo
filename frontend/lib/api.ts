@@ -71,6 +71,11 @@ export const api = {
     }),
   me: () => request<{ ok: boolean; user: User }>("/api/auth/me"),
   logout: () => request<{ ok: boolean }>("/api/auth/logout", { method: "POST" }),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    request<{ ok: boolean }>("/api/auth/change-password", {
+      method: "POST",
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
 
   listPatients: (search = "", status = "") => {
     const q = new URLSearchParams();
@@ -128,16 +133,11 @@ export const TREATMENTS = [
   "Post-Surgical Rehab",
   "Neurological Rehab",
   "Geriatric Mobility Care",
+  "General Physiotherapy",
+  "Joint Mobilization",
+  "Dry Needling",
+  "Posture Correction",
 ];
-
-export const FEE_BY_TREATMENT: Record<string, number> = {
-  "Back & Spine Care": 600,
-  "Sports Injury Rehab": 800,
-  "Neck & Shoulder Pain": 600,
-  "Post-Surgical Rehab": 900,
-  "Neurological Rehab": 1000,
-  "Geriatric Mobility Care": 700,
-};
 
 export const STATUSES: PatientStatus[] = ["active", "completed", "follow-up"];
 
@@ -154,8 +154,5 @@ export function formatDate(iso: string): string {
 export function toDateInput(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+  return d.toISOString().slice(0, 10);
 }

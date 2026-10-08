@@ -1,0 +1,27 @@
+appId: com.movewell.studio
+productName: MoveWell Studio
+directories:
+  output: release
+files:
+  - dist/**/*
+  - package.json
+extraResources:
+  - from: ../backend/dist
+    to: server
+  # Production deps only — run `npm prune --omit=dev` in ../backend first.
+  # (mongoose is imported eagerly by src/db/index.ts, so it must be present
+  # even though desktop mode uses the JSON store.)
+  - from: ../backend/node_modules
+    to: server/node_modules
+  - from: ../frontend/out
+    to: client
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.ico
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: MoveWell Studio

@@ -1,37 +1,78 @@
 @import "tailwindcss";
 
-/* Class-based dark mode (toggled via .dark on <html>, persisted in localStorage).
-   Dark is the default — the landing page is designed dark-first. */
+/* Class-based dark mode (toggled via .dark on <html>, persisted in localStorage) */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
 
-  /* Deep pine-black surfaces */
-  --color-ink-950: #060d0b;
-  --color-ink-900: #0a1512;
-  --color-ink-850: #0d1a15;
-  --color-ink-800: #10211b;
-  --color-ink-700: #163129;
-  --color-ink-600: #1e4237;
+  /* MoveWell editorial palette (matches the landing hero) */
+  --color-ivory: #f7f4ec;
+  --color-ink: #0e2a28;
 
-  /* Electric volt lime — movement, vitality, recovery */
-  --color-volt-200: #e9ffb0;
-  --color-volt-300: #dbff7a;
-  --color-volt-400: #c8f542;
-  --color-volt-500: #a8dd1f;
-  --color-volt-600: #7fb312;
+  --color-mint-50: #f0fdfa;
+  --color-mint-100: #ccfbf1;
+  --color-mint-200: #99f6e4;
+  --color-mint-300: #5eead4;
+  --color-mint-400: #2dd4bf;
+  --color-mint-500: #14b8a6;
+  --color-mint-600: #0d9488;
+  --color-mint-700: #0f766e;
+  --color-mint-800: #115e59;
+  --color-mint-900: #134e4a;
+  --color-mint-950: #042f2e;
 
-  /* Warm cream for light mode + dark-mode text */
-  --color-cream-50: #faf8f1;
-  --color-cream-100: #f4f1e6;
-  --color-cream-200: #e9e4d2;
+  --color-aqua-50: #effaf9;
+  --color-aqua-100: #d7f2f0;
+  --color-aqua-200: #b3e5e1;
 
-  /* Muted sage text on dark */
-  --color-sage-300: #a9bcb2;
-  --color-sage-400: #8ba198;
-  --color-sage-500: #6d857c;
+  /* Deep teal-navy surfaces for dark mode */
+  --color-abyss-700: #0e4a46;
+  --color-abyss-800: #093936;
+  --color-abyss-900: #062b29;
+  --color-abyss-950: #041f1e;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to { background-position: 400px 0; }
+}
+
+/* Cozy joint buddy (login page) */
+@keyframes joint-bob {
+  0%, 100% { transform: translateY(0) rotate(-2.5deg); }
+  50% { transform: translateY(-10px) rotate(2.5deg); }
+}
+@keyframes joint-blink {
+  0%, 91%, 100% { transform: scaleY(1); }
+  94.5% { transform: scaleY(0.06); }
+}
+@keyframes sparkle-rise {
+  0% { opacity: 0; transform: translateY(8px) scale(0.5) rotate(0deg); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-26px) scale(1.05) rotate(40deg); }
+}
+.joint-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Respect reduced motion: still, readable UI */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer {
+    animation: none;
+  }
+  .joint-buddy, .joint-buddy * {
+    animation: none !important;
+  }
 }
 
 html {
@@ -39,136 +80,273 @@ html {
 }
 
 body {
-  background: var(--color-cream-100);
-  color: var(--color-ink-950);
+  background: #ffffff;
+  color: #0f2724;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
 }
 
 .dark body {
-  background: var(--color-ink-950);
-  color: var(--color-cream-50);
+  background: #041f1e;
+  color: #e6f7f5;
 }
 
 ::selection {
-  background: var(--color-volt-400);
-  color: var(--color-ink-950);
+  background: #99f6e4;
+  color: #042f2e;
 }
 
-/* ---------- Glass system (dark-first) ---------- */
-.glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  backdrop-filter: blur(24px) saturate(1.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-    0 24px 55px -20px rgba(0, 0, 0, 0.7);
+/* Soft card shadow used across the app */
+.shadow-soft {
+  box-shadow: 0 10px 40px -12px rgba(13, 148, 136, 0.18), 0 2px 8px -2px rgba(4, 47, 46, 0.06);
 }
-.glass-bright {
-  background: linear-gradient(135deg, rgba(200, 245, 66, 0.1), rgba(200, 245, 66, 0.03));
-  border: 1px solid rgba(200, 245, 66, 0.22);
-  box-shadow:
-    inset 0 1px 0 0 rgba(219, 255, 122, 0.25),
-    0 0 44px -12px rgba(200, 245, 66, 0.28);
+.shadow-lift {
+  box-shadow: 0 22px 55px -16px rgba(13, 148, 136, 0.28), 0 4px 14px -4px rgba(4, 47, 46, 0.08);
+}
+.dark .shadow-soft {
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.55), 0 2px 8px -2px rgba(0, 0, 0, 0.35);
+}
+.dark .shadow-lift {
+  box-shadow: 0 22px 55px -16px rgba(0, 0, 0, 0.6), 0 4px 14px -4px rgba(45, 212, 191, 0.12);
 }
 
-:root:not(.dark) .glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.5));
-  border: 1px solid rgba(6, 13, 11, 0.08);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
-    0 24px 55px -20px rgba(6, 13, 11, 0.18);
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #e6f4f2 25%, #f4fbfa 50%, #e6f4f2 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, #093936 25%, #0e4a46 50%, #093936 75%);
+  background-size: 800px 100%;
 }
 
-/* ---------- Ambient motion ---------- */
-@keyframes ambient-drift {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(3%, -2.5%, 0) scale(1.06); }
-  100% { transform: translate3d(-2.5%, 2%, 0) scale(1.02); }
-}
-.ambient-drift {
-  animation: ambient-drift 24s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@keyframes marquee-x {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.animate-marquee {
-  animation: marquee-x 28s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-.animate-float-y {
-  animation: float-y 5s ease-in-out infinite;
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.9); opacity: 0.7; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-.animate-pulse-ring {
-  animation: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
-}
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-.animate-spin-slow {
-  animation: spin-slow 22s linear infinite;
-}
-
-/* Film grain overlay (SVG turbulence, no assets) */
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
-}
-
-/* Slim scrollbars */
+/* Slim scrollbars inside panels */
 .slim-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
 .slim-scroll::-webkit-scrollbar-track { background: transparent; }
 .slim-scroll::-webkit-scrollbar-thumb {
-  background: rgba(200, 245, 66, 0.25);
+  background: #99f6e4;
   border-radius: 999px;
 }
+.slim-scroll::-webkit-scrollbar-thumb:hover { background: #5eead4; }
+.dark .slim-scroll::-webkit-scrollbar-thumb { background: #0e4a46; }
+.dark .slim-scroll::-webkit-scrollbar-thumb:hover { background: #115e59; }
 
-/* Card hover lift */
-.lift {
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.4s ease;
-}
-.lift:hover {
-  transform: translateY(-6px);
-}
-
-/* Outlined display text */
-.text-stroke {
-  -webkit-text-stroke: 1px rgba(250, 248, 241, 0.28);
-  color: transparent;
-}
-:root:not(.dark) .text-stroke {
-  -webkit-text-stroke: 1px rgba(6, 13, 11, 0.25);
+/* Film-grain overlay for the landing hero band (SVG turbulence, no assets) */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
-/* Reduced motion: calm everything down */
+/* ---------- Glassmorphism system ---------- */
+/* Frosted-glass card: translucent white over ambient color fields, strong blur + top highlight */
+.glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.30));
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  backdrop-filter: blur(30px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.22),
+    0 24px 55px -18px rgba(13, 148, 136, 0.28),
+    0 6px 18px -6px rgba(4, 47, 46, 0.14);
+}
+.dark .glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
+    0 24px 55px -18px rgba(0, 0, 0, 0.65),
+    0 6px 18px -6px rgba(0, 0, 0, 0.45);
+}
+
+/* Denser glass for modals/toasts/login card — stays readable over blur */
+.glass-deep {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.64));
+  -webkit-backdrop-filter: blur(32px) saturate(1.8);
+  backdrop-filter: blur(32px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.3),
+    0 30px 70px -20px rgba(4, 47, 46, 0.35);
+}
+.dark .glass-deep {
+  background: linear-gradient(135deg, rgba(13, 74, 70, 0.88), rgba(6, 43, 41, 0.82));
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.05),
+    0 30px 70px -20px rgba(0, 0, 0, 0.75);
+}
+
+/* Translucent floating pills/badges */
+.glass-pill {
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.55),
+    0 6px 16px -8px rgba(4, 47, 46, 0.2);
+}
+.dark .glass-pill {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    0 6px 16px -8px rgba(0, 0, 0, 0.55);
+}
+
+/* Frosted sticky navbar bar */
+.glass-bar {
+  background: linear-gradient(180deg, rgba(247, 244, 236, 0.72), rgba(255, 255, 255, 0.42));
+  -webkit-backdrop-filter: blur(28px) saturate(1.7);
+  backdrop-filter: blur(28px) saturate(1.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.7),
+    0 10px 30px -14px rgba(13, 148, 136, 0.22);
+}
+.dark .glass-bar {
+  background: linear-gradient(180deg, rgba(4, 31, 30, 0.78), rgba(6, 43, 41, 0.55));
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    0 10px 30px -14px rgba(0, 0, 0, 0.6);
+}
+
+/* Respect reduced motion: still, readable UI */
 @media (prefers-reduced-motion: reduce) {
-  .ambient-drift, .animate-marquee, .animate-float-y,
-  .animate-pulse-ring, .animate-spin-slow {
-    animation: none !important;
+  .animate-blob-drift, .animate-blob-drift-2, .animate-float-slow,
+  .animate-twinkle, .animate-glint {
+    animation: none;
   }
-  html { scroll-behavior: auto; }
+}
+
+/* ---------- Landing: pure-CSS 3D glass bubble + warm glow ---------- */
+/* A 3D-looking glass sphere built entirely from gradients — the center
+   stays transparent so the headline reads through it. The outer box-shadow
+   is the soft sunlight glow. */
+.orb-sphere {
+  border: 1px solid rgba(14, 42, 40, 0.28);
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      rgba(255, 255, 255, 0.50) 0%,
+      rgba(255, 255, 255, 0.12) 38%,
+      transparent 68%
+    );
+  box-shadow:
+    0 0 90px 30px rgba(255, 214, 150, 0.28);
+}
+.dark .orb-sphere {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      rgba(255, 255, 255, 0.38) 0%,
+      rgba(255, 255, 255, 0.08) 38%,
+      transparent 68%
+    );
+  box-shadow:
+    0 0 110px 36px rgba(255, 214, 150, 0.35);
+}
+
+/* ---------- Landing orchid pot (discrete, bottom-right) ---------- */
+/* The PNG carries true transparency (background removed), so it needs no
+   masks, overlays, or grading — it floats cleanly on both themes. */
+/* barely-there slow zoom keeps the still-life alive */
+.pot-zoom {
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+/* slow, barely-there drift for the ambient mesh gradient */
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5%, -2%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-2%, 2%, 0) scale(1);
+  }
+}
+.ambient-drift {
+  animation: ambient-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-drift {
+    animation: none;
+  }
+}
+
+/* Settings section switcher: gentle fade-rise when a new section appears. */
+@keyframes settings-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.settings-enter {
+  animation: settings-enter 0.32s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-enter {
+    animation: none;
+  }
+}
+
+/* Sidebar settings dropdown — smooth unfold with staggered options */
+.side-submenu {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.42s cubic-bezier(0.22, 0.9, 0.28, 1),
+    opacity 0.28s ease,
+    visibility 0s linear 0.42s;
+}
+.side-submenu.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.42s cubic-bezier(0.22, 0.9, 0.28, 1),
+    opacity 0.3s ease 0.06s,
+    visibility 0s;
+}
+.side-submenu-clip {
+  overflow: hidden;
+  min-height: 0;
+}
+.side-submenu-item {
+  opacity: 0;
+  transform: translateY(-7px);
+  transition:
+    opacity 0.26s ease,
+    transform 0.4s cubic-bezier(0.22, 0.9, 0.28, 1),
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+.side-submenu.open .side-submenu-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .side-submenu,
+  .side-submenu-item {
+    transition: none;
+  }
+  .side-submenu-item {
+    opacity: 1;
+    transform: none;
+  }
 }

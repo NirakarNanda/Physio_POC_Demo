@@ -1,30 +1,65 @@
-import { CLINIC } from "@/lib/clinic";
+interface LogoProps {
+  size?: number;
+  className?: string;
+}
 
-/** MoveWell wordmark: a volt motion-arc + wordmark. */
-export default function Logo({ compact = false }: { compact?: boolean }) {
+/** MoveWell mark: white activity pulse inside a mint gradient circle. */
+export default function Logo({ size = 40, className = "" }: LogoProps) {
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <svg
-        width={compact ? 30 : 36}
-        height={compact ? 30 : 36}
-        viewBox="0 0 36 36"
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      className={className}
+      role="img"
+      aria-label="MoveWell Physiotherapy Studio logo"
+    >
+      <defs>
+        <linearGradient id="movewell-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#5eead4" />
+          <stop offset="55%" stopColor="#14b8a6" />
+          <stop offset="100%" stopColor="#0e7490" />
+        </linearGradient>
+      </defs>
+      <circle cx="24" cy="24" r="22" fill="url(#movewell-g)" />
+      <circle cx="24" cy="24" r="22" fill="none" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="1.5" />
+      {/* activity pulse — movement, the heart of physiotherapy */}
+      <path
+        d="M9 25.5h6.2l3.4-7.5 5.2 13 3.6-8.2 1.8 2.7H39"
         fill="none"
-        aria-hidden
-      >
-        <circle cx="18" cy="18" r="16.5" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1.5" />
-        <path
-          d="M6 22c4-7 8-11 12-11s8 4 12 11"
-          stroke="#c8f542"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        <circle cx="18" cy="9.5" r="3" fill="#c8f542" />
-        <circle cx="27.5" cy="24.5" r="2" fill="#c8f542" opacity="0.7" />
-      </svg>
-      <span className="font-display text-xl font-semibold tracking-tight">
-        {CLINIC.name}
-        <span className="text-volt-400">.</span>
-      </span>
-    </span>
+        stroke="#ffffff"
+        strokeWidth="3.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* sparkle */}
+      <path
+        d="M35.5 12.5c.6 1.4 1.1 2 2.5 2.6-1.4.6-1.9 1.2-2.5 2.6-.6-1.4-1.1-2-2.5-2.6 1.4-.6 1.9-1.2 2.5-2.6z"
+        fill="#ffffff"
+        opacity="0.9"
+      />
+    </svg>
+  );
+}
+
+/** Standalone pulse glyph used for decorative / section art. */
+export function PulseGlyph({
+  size = 24,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" className={className} aria-hidden="true">
+      <path
+        d="M9 25.5h6.2l3.4-7.5 5.2 13 3.6-8.2 1.8 2.7H39"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

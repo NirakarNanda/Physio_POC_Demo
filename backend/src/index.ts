@@ -109,7 +109,7 @@ async function main(): Promise<void> {
     const passwordHash = await bcrypt.hash(DESKTOP_DOCTOR_PASSWORD, 10);
     await db.upsertDoctor({
       email: DESKTOP_DOCTOR_EMAIL,
-      name: "Dr. Ananya Sharma",
+      name: "Dr. Arjun Rao",
       passwordHash,
     });
     ({ doctors, patients } = await db.getCounts());
@@ -126,13 +126,19 @@ async function main(): Promise<void> {
   const server = app.listen(PORT, () => {
     console.log(`[server] listening on http://localhost:${PORT} (db mode: ${db.mode})`);
   });
+  // EADDRINUSE: a stale server is already on this port (common on Windows
+  // when a terminal was closed without stopping `npm run dev`). Print a
+  // fix instead of an unhandled stack trace.
   server.on("error", (err: NodeJS.ErrnoException) => {
     if (err.code === "EADDRINUSE") {
-      console.error(`[server] ❌ Port ${PORT} is already in use by another program.`);
-      console.error(`[server] PowerShell — find it:   netstat -ano | findstr :${PORT}`);
-      console.error(`[server] PowerShell — kill it:    taskkill /PID <pid> /F`);
-      console.error(`[server] …or just use a free port: $env:PORT=5001; npm run dev`);
-      console.error(`[server] (then start the frontend with $env:NEXT_PUBLIC_API_URL="http://localhost:5001")`);
+      console.error(
+        `[server] ❌ Port ${PORT} is already in use — another server is running.\n` +
+          `[server] Fix (PowerShell):\n` +
+          `  netstat -ano | findstr :${PORT}\n` +
+          `  taskkill /PID <pid> /F\n` +
+          `[server] Or run this backend on another port:\n` +
+          `  $env:PORT=5001; npm run dev`
+      );
       process.exit(1);
     }
     throw err;

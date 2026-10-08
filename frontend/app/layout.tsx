@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/theme/ThemeProvider";
+import SettingsProvider from "@/lib/settings";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -9,26 +10,20 @@ const inter = Inter({
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  display: "swap",
-  style: ["normal", "italic"],
-  weight: ["400", "500", "600", "700"],
-});
-
 export const metadata: Metadata = {
-  title: "MoveWell Physiotherapy Studio — Move better. Live pain-free.",
+  title: "MoveWell Physiotherapy Studio — Modern Physio Care",
   description:
-    "Evidence-based physiotherapy, sports rehab and post-surgical recovery. Book your movement assessment at MoveWell Physiotherapy Studio.",
+    "MoveWell Physiotherapy Studio: expert physiotherapy, sports rehab and pain relief. Move better, live stronger.",
 };
 
 /**
- * Blocking inline script: reads the persisted theme before first paint.
- * Light is the default — .dark is only added when the user explicitly chose
- * dark. suppressHydrationWarning covers the attribute diff.
+ * Blocking inline script: reads the persisted theme before first paint and
+ * applies .dark to <html> so there is no light-flash on reload. Dark is the
+ * default — the class is only skipped when the user explicitly chose light.
+ * The class is applied imperatively (React never renders it), and
+ * suppressHydrationWarning covers the attribute diff at hydration.
  */
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('movewell-theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('movewell-theme');if(t!=='light'){document.documentElement.classList.add('dark');}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -39,14 +34,16 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body className="flex min-h-full flex-col bg-cream-100 text-ink-950 dark:bg-ink-950 dark:text-cream-50">
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="flex min-h-full flex-col bg-white text-slate-900 dark:bg-abyss-950 dark:text-mint-50">
+        <ThemeProvider>
+          <SettingsProvider>{children}</SettingsProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

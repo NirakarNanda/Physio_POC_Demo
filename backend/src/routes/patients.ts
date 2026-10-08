@@ -11,6 +11,10 @@ const TREATMENTS = new Set([
   "Post-Surgical Rehab",
   "Neurological Rehab",
   "Geriatric Mobility Care",
+  "General Physiotherapy",
+  "Joint Mobilization",
+  "Dry Needling",
+  "Posture Correction",
 ]);
 
 function validate(input: Record<string, unknown>, partial: boolean): string | null {
