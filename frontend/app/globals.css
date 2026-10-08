@@ -350,3 +350,40 @@ body {
     transform: none;
   }
 }
+
+/* ── Skeleton journey (landing) ────────────────────────────────── */
+.skel [data-bone] {
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+.skel [data-bone] :is(path, circle, rect, ellipse) {
+  transition: stroke 0.5s ease;
+}
+/* spotlight: dim the bones that aren't being treated right now */
+.skel.has-active [data-bone]:not(.is-active) {
+  opacity: 0.2;
+}
+.skel [data-bone].is-active {
+  filter: drop-shadow(0 0 9px rgba(20, 184, 166, 0.85));
+}
+.skel [data-bone].is-active :is(path, circle, rect, ellipse) {
+  stroke: #0d9488;
+}
+.dark .skel [data-bone].is-active :is(path, circle, rect, ellipse) {
+  stroke: #5eead4;
+}
+.skel .joint {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.skel [data-bone].is-active .joint {
+  animation: joint-ping 1.8s ease-in-out infinite;
+}
+@keyframes joint-ping {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skel [data-bone].is-active .joint {
+    animation: none;
+  }
+}
